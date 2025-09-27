@@ -1,4 +1,4 @@
-const borrowRequest = async ({
+export const borrowRequest = async ({
   address,
   amount,
 }: {
