@@ -9,8 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^2.0.17",
+    "@ai-sdk/react": "^2.0.56",
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.3",
+    "ai": "^5.0.56",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
@@ -20,7 +23,8 @@
     "react-dom": "19.1.0",
     "react-resizable-panels": "^3.0.6",
     "tailwind-merge": "^3.3.1",
-    "thirdweb": "^5.108.3"
+    "thirdweb": "^5.108.3",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

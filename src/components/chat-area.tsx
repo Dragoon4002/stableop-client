@@ -5,6 +5,8 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import TransactionLayout from "./transaction-components/Layout";
+import Swap from "./transaction-components/Swap";
 
 interface Message {
   id: string;
@@ -79,6 +81,8 @@ const ChatArea = () => {
   const [inputValue, setInputValue] = useState("");
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const [state, setState] = useState<string>("");
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
