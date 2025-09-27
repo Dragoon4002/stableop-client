@@ -29,7 +29,7 @@ const DataTable: React.FC<DataTableProps> = ({
   data,
   isLoading = false,
   emptyMessage = "No data available",
-  className = ""
+  className = "",
 }) => {
   const getAlignmentClass = (align?: string) => {
     switch (align) {
@@ -55,7 +55,10 @@ const DataTable: React.FC<DataTableProps> = ({
 
   const renderEmptyState = () => (
     <TableRow>
-      <TableCell colSpan={columns.length} className="h-32 text-center text-muted-foreground">
+      <TableCell
+        colSpan={columns.length}
+        className="h-32 text-center text-muted-foreground"
+      >
         <div className="flex flex-col items-center justify-center space-y-2">
           <div className="text-4xl">📊</div>
           <span>{emptyMessage}</span>
@@ -75,8 +78,8 @@ const DataTable: React.FC<DataTableProps> = ({
             {row[column.key] === undefined || row[column.key] === null
               ? "-"
               : typeof row[column.key] === "object"
-                ? JSON.stringify(row[column.key])
-                : String(row[column.key])}
+              ? JSON.stringify(row[column.key])
+              : String(row[column.key])}
           </TableCell>
         ))}
       </TableRow>
