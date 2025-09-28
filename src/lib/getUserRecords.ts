@@ -39,7 +39,7 @@ export async function getUserRecords(user: string): Promise<[LendRecord[], Borro
 
   if (data.result && Array.isArray(data.result) && data.result[0]) {
     const resultData = data.result[0];
-    console.log("ResultData:", resultData);
+    console.log("ResultData:", resultData)
     if (resultData.success && Array.isArray(resultData.data) && resultData.data.length >= 2) {
       const [lends, borrows] = resultData.data;
       return [lends || [], borrows || []];

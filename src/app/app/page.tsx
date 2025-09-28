@@ -36,38 +36,27 @@ interface BorrowRecord {
 const Dashboard = () => {
   const account = useActiveAccount();
   const [poolStatus, setPoolStatus] = useState<PoolStatus | null>(null);
-  const [lendRecords, setLendRecords] = useState<LendRecord[]>([]);
-  const [borrowRecords, setBorrowRecords] = useState<BorrowRecord[]>([]);
+  const [lendRecords, setLendRecords] = useState<LendRecord[]>([
+    {
+      amount: "1000 PYUSD",
+      createdAt: "2024-01-15",
+      duration: "30 days",
+      approxReturns: "1050 PYUSD",
+      active: true
+    }
+  ]);
+  const [borrowRecords, setBorrowRecords] = useState<BorrowRecord[]>([
+    {
+      amount: "500 PYUSD",
+      borrowedAt: "2024-01-20",
+      duration: "30 days",
+      repayDate: "2024-02-20",
+      lockedCollateral: "600 PYUSD",
+      active: true
+    }
+  ]);
   const [recordsLoading, setRecordsLoading] = useState(false);
   
-
-  const fetchPoolStatus = async () => {
-    try {
-      const response = await fetch("/api/pool-status");
-      const data = await response.json();
-      console.log("Pool:", data);
-      
-      if (data.liquidity !== undefined) {
-        setPoolStatus({
-          liquidity: data.liquidity,
-          borrowed: data.borrowed,
-          utilizationRate: data.utilizationRate,
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching pool status:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPoolStatus();
-  }, []);
-
-  useEffect(() => {
-    if (account?.address) {
-      fetchUserRecords();
-    }
-  }, [account?.address]);
 
   const fetchUserRecords = async () => {
     if (!account?.address) {
@@ -87,7 +76,7 @@ const Dashboard = () => {
         }),
       });
       const data = await response.json();
-      console.log("Records:", data?.data);
+      // console.log("Records:", data?.data);
       
       if (data?.data && Array.isArray(data.data) && data.data.length >= 2) {
         const [lends, borrows] = data.data;
@@ -113,6 +102,41 @@ const Dashboard = () => {
       setRecordsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUserRecords();
+  }, []);
+
+  const fetchPoolStatus = async () => {
+    try {
+      const response = await fetch("/api/pool-status");
+      const data = await response.json();
+      console.log("Pool:", data);
+      
+      if (data.liquidity !== undefined) {
+        setPoolStatus({
+          liquidity: data.liquidity,
+          borrowed: data.borrowed,
+          utilizationRate: data.utilizationRate,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching pool status:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPoolStatus();
+  }, []);
+
+  // Commented out to show demo data
+  // useEffect(() => {
+  //   if (account?.address) {
+  //     fetchUserRecords();
+  //   }
+  // }, [account?.address]);
+
+  
 
   const handleLending = async () => {
     if (!account) {
@@ -202,7 +226,12 @@ const Dashboard = () => {
                       },
                       { key: "createdAt", label: "Created At", align: "right" },
                     ]}
-                    data={lendRecords?.length > 0 ? lendRecords.map(formatLendRecordForTable) : []}
+                    data={lendRecords.map(record => ({
+                      amount: record.amount,
+                      duration: record.duration,
+                      returns: record.approxReturns,
+                      createdAt: record.createdAt
+                    }))}
                     isLoading={recordsLoading}
                     emptyMessage="No lending records found"
                   />
@@ -224,7 +253,12 @@ const Dashboard = () => {
                           align: "right",
                         },
                       ]}
-                      data={borrowRecords?.length > 0 ? borrowRecords.map(formatBorrowRecordForTable) : []}
+                      data={borrowRecords.map(record => ({
+                        amount: record.amount,
+                        duration: record.duration,
+                        returns: record.lockedCollateral,
+                        createdAt: record.borrowedAt
+                      }))}
                       isLoading={recordsLoading}
                       emptyMessage="No borrow records found"
                     />
