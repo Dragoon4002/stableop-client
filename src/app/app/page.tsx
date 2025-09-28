@@ -9,6 +9,8 @@ import { useActiveAccount } from "thirdweb/react";
 import React, { useState, useEffect } from "react";
 import { defineChain, getContract, readContract } from "thirdweb";
 import { client } from "@/lib/thirdweb-client";
+import { getUserRecords } from "@/lib/getUserRecords";
+import { Account } from "thirdweb/wallets";
 
 interface PoolStatus {
   liquidity: number;
@@ -104,7 +106,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchUserRecords();
+    getUserRecords(account?.address || "");
   }, []);
 
   const fetchPoolStatus = async () => {
